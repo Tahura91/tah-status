@@ -4,17 +4,43 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
+	"log"
+	"strings"
+
+	"net/http"
+
 	"github.com/spf13/cobra"
 )
 
 // checkCmd represents the check command
 var checkCmd = &cobra.Command{
-	
 	Use:   "check",
-	Short: "check command is used to check the status of a website",
-	Long:  `check command is used to check the status of a website. It can be used to check the status of a website and get the response time of the website.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
 
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		https := "https://"
+
+		url := args[0]
+
+		if !strings.HasPrefix(url, https) {
+			url = https + url
+		} 
+		
+		fmt.Println(url)
+
+		resp, err := http.Get(url)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Print(resp)
+		status_code := resp.StatusCode
+		fmt.Println(status_code, ":", url)
 	},
 }
 
