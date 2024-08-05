@@ -5,40 +5,105 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"strings"
-
+	"net"
 	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
+
+type check struct {
+	ping   int
+	Ip     string
+	status string
+}
 
 // checkCmd represents the check command
 var checkCmd = &cobra.Command{
 	Use:   "check",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Check the status of a website",
+	Long:  `Check the status of a website. It can be used to check the status of a website and get the response time of the website.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		https := "https://"
+
+		var httpStatus []check
 
 		url := args[0]
 
 		if !strings.HasPrefix(url, https) {
 			url = https + url
-		} 
-		
-		fmt.Println(url)
+		}
+		if len(args) > 1 {
+			table := tablewriter.NewWriter(os.Stdout)
+
+			headers := []string{"Ping (ms)", "Address", "Status"}
+
+			table.SetHeader(headers)
+
+			pings, _ := strconv.Atoi(args[1])
+			fmt.Println("Pinging to the Following URL", url)
+
+			fmt.Println()
+			fmt.Println("Check the following table for the status of the website")
+			fmt.Println()
+
+			if pings != 0 {
+
+				for i := 0; i < pings; i++ {
+					start := time.Now()
+					resp, err := http.Get(url)
+					if err != nil {
+						fmt.Println("Error:", err)
+					}
+					ping := time.Since(start).Milliseconds()
+
+					ips, _ := net.LookupIP(resp.Request.URL.Hostname())
+					ip := ips[0].String()
+					status := "❌"
+					if resp.StatusCode == http.StatusOK {
+						status = "✅"
+					}
+
+					value := check{int(ping), ip, status}
+
+					httpStatus = append(httpStatus, value)
+
+				}
+
+				for i := 0; i < pings; i++ {
+					table.Append([]string{strconv.Itoa(httpStatus[0].ping), httpStatus[0].Ip, httpStatus[0].status})
+				}
+				table.Render()
+			}
+		}
+
+		// fmt.Print(resp)
 
 		resp, err := http.Get(url)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("Error:", err)
 		}
-		fmt.Print(resp)
+
+		fmt.Println()
+		fmt.Println()
+
+		// Close the response body when the function returns
+		defer resp.Body.Close()
+
+		// Print the HTTP status
+		fmt.Printf("HTTP/1.1 %s\n", resp.Status)
+
+		// Print the response headers
+		// for key, values := range resp.Header {
+		// 	for _, value := range values {
+		// 		fmt.Printf("%s: %s\n", key, value)
+		// 	}
+		// }
+
 		status_code := resp.StatusCode
 		fmt.Println(status_code, ":", url)
 	},
