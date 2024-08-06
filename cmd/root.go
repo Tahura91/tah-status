@@ -1,23 +1,19 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
+
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "hsc",
+	Use:   "http-status-checker [url] [pings]",
 	Short: "hsc is a CLI tool to check the status of a website",
-	Long: `hsc is a CLI tool to check the status of a website. It can be used to check the status of a website and get the response time of the website.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Long:  `hsc is a CLI tool to check the status of a website. It can be used to check the status of a website and get the response time of the website.`,
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -26,15 +22,17 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
+	rootCmd.CompletionOptions.HiddenDefaultCmd = true
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.http-status-checker.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// Override the default help function
+	rootCmd.SetHelpFunc(func(cmd *cobra.Command, args []string) {
+		fmt.Println("hsc is a CLI tool to check the status of a website.")
+		fmt.Println("It can be used to check the status of a website and get the response time of the website.")
+		fmt.Println("\nUsage:\n  http-status-checker [url] [pings]")
+		fmt.Println("Flags:")
+		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
+			fmt.Printf("  -%s, --%s: %s\n", flag.Shorthand, flag.Name, flag.Usage)
+		})
+	})
 }
-
-
