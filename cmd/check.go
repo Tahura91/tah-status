@@ -37,13 +37,11 @@ var checkCmd = &cobra.Command{
 		if !strings.HasPrefix(url, https) {
 			url = https + url
 		}
+		table := tablewriter.NewWriter(os.Stdout)
+		headers := []string{"Ping (ms)", "Address", "Status"}
+		table.SetHeader(headers)
+
 		if len(args) > 1 {
-			table := tablewriter.NewWriter(os.Stdout)
-
-			headers := []string{"Ping (ms)", "Address", "Status"}
-
-			table.SetHeader(headers)
-
 			pings, _ := strconv.Atoi(args[1])
 			fmt.Println("Pinging to the Following URL", url)
 
@@ -75,37 +73,46 @@ var checkCmd = &cobra.Command{
 				}
 
 				for i := 0; i < pings; i++ {
-					table.Append([]string{strconv.Itoa(httpStatus[0].ping), httpStatus[0].Ip, httpStatus[0].status})
+					table.Append([]string{strconv.Itoa(httpStatus[i].ping), httpStatus[i].Ip, httpStatus[i].status})
 				}
-				table.Render()
+
+			}
+		} else {
+			pings := 4
+			fmt.Println("Pinging to the Following URL", url)
+
+			fmt.Println()
+			fmt.Println("Check the following table for the status of the website")
+			fmt.Println()
+
+			if pings != 0 {
+				for i := 0; i < pings; i++ {
+					start := time.Now()
+					resp, err := http.Get(url)
+					if err != nil {
+						fmt.Println("Error:", err)
+					}
+					ping := time.Since(start).Milliseconds()
+
+					ips, _ := net.LookupIP(resp.Request.URL.Hostname())
+					ip := ips[0].String()
+					status := "❌"
+					if resp.StatusCode == http.StatusOK {
+						status = "✅"
+					}
+
+					value := check{int(ping), ip, status}
+
+					httpStatus = append(httpStatus, value)
+
+				}
+
+				for i := 0; i < pings; i++ {
+					table.Append([]string{strconv.Itoa(httpStatus[i].ping), httpStatus[i].Ip, httpStatus[i].status})
+				}
 			}
 		}
-
-		// fmt.Print(resp)
-
-		resp, err := http.Get(url)
-		if err != nil {
-			fmt.Println("Error:", err)
-		}
-
-		fmt.Println()
-		fmt.Println()
-
-		// Close the response body when the function returns
-		defer resp.Body.Close()
-
-		// Print the HTTP status
-		fmt.Printf("HTTP/1.1 %s\n", resp.Status)
-
-		// Print the response headers
-		// for key, values := range resp.Header {
-		// 	for _, value := range values {
-		// 		fmt.Printf("%s: %s\n", key, value)
-		// 	}
-		// }
-
-		status_code := resp.StatusCode
-		fmt.Println(status_code, ":", url)
+		table.Render()
 	},
 }
 
