@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -38,6 +35,7 @@ var checkCmd = &cobra.Command{
 			url = https + url
 		}
 		table := tablewriter.NewWriter(os.Stdout)
+
 		headers := []string{"Ping (ms)", "Address", "Status"}
 		table.SetHeader(headers)
 
