@@ -8,6 +8,9 @@
 - Measure the response time of the website.
 - Ping the website multiple times and get average response time.
 
+## Technologies Used
+- Golang
+
 ## Installation
 
 To install the `http-status-checker` tool, clone this repository and build the project:
@@ -15,7 +18,7 @@ To install the `http-status-checker` tool, clone this repository and build the p
 ```sh
 git clone https://github.com/Hrishikesh-Panigrahi/http-status-checker
 cd http-status-checker
-go build -o hsc
+go build .
 ```
 
 ## Usage
@@ -25,7 +28,7 @@ go build -o hsc
 To check the status of a website:
 
 ```sh
-./hsc http-status-checker [url]
+./http-status-checker check [url]
 ```
 
 ### Custom Ping Count
@@ -33,7 +36,7 @@ To check the status of a website:
 To ping a website a specific number of times:
 
 ```sh
-./hsc http-status-checker [url] [pings]
+./http-status-checker check [url] [pings]
 ```
 
 ### Help Command
@@ -41,12 +44,12 @@ To ping a website a specific number of times:
 To display the help message:
 
 ```sh
-./hsc --help
+./http-status-checker --help
 ```
 
 ## Docker Usage
 
-You can also run the hsc tool using Docker. To do this, pull the Docker image and run it:
+You can also run the tool using Docker. To do this, pull the Docker image and run it:
 
 ### Pulling the Docker Image
 
@@ -69,7 +72,7 @@ docker run hrishikeshpanigrahi025/http-status-checker check www.google.com 2
 If you don't specify the number of pings, it will default to 4 pings:
 
 ```sh
-./hsc http-status-checker www.google.com
+./http-status-checker check www.google.com
 ```
 ![Ping Example](static/Example.png)
 
@@ -78,14 +81,14 @@ If you don't specify the number of pings, it will default to 4 pings:
 Specify the number of pings:
 
 ```sh
-./hsc http-status-checker www.google.com 10
+./http-status-checker check www.google.com 10
 ```
 ![Ping Example](static/pingExample.png)
 
 ### Displaying Help
 
 ```sh
-./hsc --help
+./http-status-checker --help
 ```
 
 ## Flags
