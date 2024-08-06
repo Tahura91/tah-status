@@ -13,7 +13,7 @@
 To install the `http-status-checker` tool, clone this repository and build the project:
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/Hrishikesh-Panigrahi/http-status-checker
 cd http-status-checker
 go build -o hsc
 ```
@@ -45,18 +45,23 @@ To display the help message:
 ```
 
 ## Docker Usage
+
 You can also run the hsc tool using Docker. To do this, pull the Docker image and run it:
 
 ### Pulling the Docker Image
+
 ```sh
 docker pull hrishikeshpanigrahi025/http-status-checker
 ```
 
 ### Running the Docker Container
+
 To check the status of a website with a specific number of pings:
+
 ```sh
 docker run hrishikeshpanigrahi025/http-status-checker check www.google.com 2
 ```
+
 ## Examples
 
 ### Checking Status with Default Pings
@@ -66,6 +71,7 @@ If you don't specify the number of pings, it will default to 4 pings:
 ```sh
 ./hsc http-status-checker www.google.com
 ```
+![Ping Example](static/Example.png)
 
 ### Checking Status with Custom Ping Count
 
@@ -74,6 +80,7 @@ Specify the number of pings:
 ```sh
 ./hsc http-status-checker www.google.com 10
 ```
+![Ping Example](static/pingExample.png)
 
 ### Displaying Help
 
@@ -82,4 +89,5 @@ Specify the number of pings:
 ```
 
 ## Flags
+
 --help: Show help for the hsc command.
