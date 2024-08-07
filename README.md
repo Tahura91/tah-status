@@ -5,8 +5,8 @@
 ## Features
 
 - Check the status of a website.
-- Measure the response time of the website.
-- Ping the website multiple times and get average response time.
+- Get the IP address of the website and the local machine
+- Display the alias or canonical name of the specified URL 
 
 ## Technologies Used
 - Golang
@@ -25,7 +25,7 @@ go build .
 
 ### Basic Usage
 
-To check the status of a website:
+Check the status of the specified URL:
 
 ```sh
 ./http-status-checker check [url]
@@ -33,10 +33,34 @@ To check the status of a website:
 
 ### Custom Ping Count
 
-To ping a website a specific number of times:
+Check the status and response time of the specified URL with specified pings:
 
 ```sh
 ./http-status-checker check [url] [pings]
+```
+
+### Check IP
+
+Retrieve and display the IP address of the Local Machine:
+
+```sh
+./http-status-checker ip
+```
+
+### Check IP of the website
+
+Retrieve and display the IP address of the specified URL:
+
+```sh
+./http-status-checker ip [url]
+```
+
+### Display the alias of the website
+
+Resolve and display the alias or canonical name of the specified URL:
+
+```sh
+./http-status-checker alias [url]
 ```
 
 ### Help Command
@@ -74,7 +98,6 @@ If you don't specify the number of pings, it will default to 4 pings:
 ```sh
 ./http-status-checker check www.google.com
 ```
-![Ping Example](static/Example.png)
 
 ### Checking Status with Custom Ping Count
 
@@ -83,7 +106,6 @@ Specify the number of pings:
 ```sh
 ./http-status-checker check www.google.com 10
 ```
-![Ping Example](static/pingExample.png)
 
 ### Displaying Help
 
