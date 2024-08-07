@@ -12,38 +12,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// aliasCmd represents the alias command
 var aliasCmd = &cobra.Command{
 	Use:   "alias",
-	Short: "",
+	Short: "alias is a command that will return the IP addresses of a website, the local IP address, and the DNS server address.",
 	Long:  `alias is a command that will return the IP addresses of a website, the local IP address, and the DNS server address.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		if len(args) != 1 {
+			fmt.Println("Usage: alias <destination>")
+			os.Exit(1)
+		}
 		website := args[0]
 		ips, err := net.LookupIP(website)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
-			os.Exit(1)
-		}
-
-		addrs, err := net.InterfaceAddrs()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not get local IP: %v\n", err)
-			os.Exit(1)
-		}
-
-		var localIP string
-		for _, addr := range addrs {
-			if ipNet, ok := addr.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
-				if ipNet.IP.To4() != nil {
-					localIP = ipNet.IP.String()
-					break
-				}
-			}
-		}
-
-		if localIP == "" {
-			fmt.Println("Local IP address not found")
 			os.Exit(1)
 		}
 
@@ -53,7 +34,7 @@ var aliasCmd = &cobra.Command{
 		command.Stdout = cmdOutput
 		err = command.Run()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not run ipconfig: %v\n", err)
+			fmt.Fprintf(os.Stderr, "Could not get the IP: %v\n", err)
 			os.Exit(1)
 		}
 

@@ -39,9 +39,9 @@ var checkCmd = &cobra.Command{
 		headers := []string{"Ping (ms)", "Address", "Status"}
 		table.SetHeader(headers)
 
-		if len(args) > 1 {
+		if len(args) == 2 {
 			pings, _ := strconv.Atoi(args[1])
-			fmt.Println("Pinging to the Following URL", url)
+			fmt.Println("Checking the following URL", url)
 
 			fmt.Println()
 			fmt.Println("Check the following table for the status of the website")
@@ -75,9 +75,9 @@ var checkCmd = &cobra.Command{
 				}
 
 			}
-		} else {
+		} else if len(args) == 1 {
 			pings := 4
-			fmt.Println("Pinging to the Following URL", url)
+			fmt.Println("Checking the following URL", url)
 
 			fmt.Println()
 			fmt.Println("Check the following table for the status of the website")
@@ -108,6 +108,12 @@ var checkCmd = &cobra.Command{
 				for i := 0; i < pings; i++ {
 					table.Append([]string{strconv.Itoa(httpStatus[i].ping), httpStatus[i].Ip, httpStatus[i].status})
 				}
+			} else {
+				fmt.Println()
+				fmt.Println("Usage:")
+				fmt.Println("\t check <destination>")
+				fmt.Println("\t check <destination> <pings>")
+				fmt.Println()
 			}
 		}
 		table.Render()

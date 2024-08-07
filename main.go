@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-	// fmt.Print("Welcome to command line application")
 	cmd.Execute()
 }
