@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+http-status-checker.exe
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
@@ -28,3 +29,4 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+mytodo.txt
