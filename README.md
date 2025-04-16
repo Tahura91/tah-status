@@ -3,11 +3,12 @@
 
 A lightweight and easy-to-use tool built with **Go** to check the status and uptime of websites. With this tool, you can monitor whether a website is **up** or **down**, and analyze HTTP status codes for any given URL.
 
+
 ## 📦 **Features**
 
 - 🚀 **Check Website Status**: Check whether a given website is online or offline.
 - 💡 **Detailed HTTP Status Codes**: See exact HTTP status codes returned by the website (200, 404, etc.).
-- 🔄 **Simple CLI**: Clean, easy-to-use command-line interface.
+- 🔄 **Simple CLI**: Clean, easy-to-use command-line interface(CLI).
 - ⏱ **Uptime Monitoring**: Continuous monitoring of multiple websites for uptime tracking.
 - 🛠 **Built with Go**: Written in Go for speed and efficiency.
 
